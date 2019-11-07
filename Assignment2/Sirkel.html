@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SirkelKunst</title>
+</head>
+<body>
+<form>
+    <p>Antall punker:
+        <select onchange="UpdateX()" id = "X">
+            <option value = "16">16</option>
+            <option value = "32">32</option>
+            <option value = "64">64</option>
+            <option value = "128">128</option>
+            <option value = "256">256</option>
+            <option value = "512">512</option>
+            <option value = "1024">1024</option>
+            <option value = "2048">2048</option>
+        </select>
+        X til KX
+        <input onchange="updateFactor()" id = "KX" type="number" min="1" max="++" value="1"></input>
+
+    </p>
+</form>
+<canvas id="myCanvas" width="600" height="600" style="border:1px solid #d3d3d3;"></canvas>
+
+<script>
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    let circlePoints=document.getElementById("X").value;
+    let factor=document.getElementById("KX").value;
+    let xStart = canvas.width / 2;
+    let yStart = canvas.height/2;
+    let radius=290;
+
+    draw();
+
+    function UpdateX() {
+        circlePoints=document.getElementById("X").value;
+        if(factor !== 1) {
+            draw2();
+        }else{
+            draw();
+        }
+    }
+
+    function updateFactor() {
+        factor=document.getElementById("KX").value;
+        if(factor !== 1) {
+            draw2();
+        }else{
+            draw();
+        }
+    }
+    function draw() {
+        let linedistanse=2*Math.PI/circlePoints;
+
+        ctx.clearRect(0,0,600,600);
+        ctx.beginPath();
+        for (var i = 0; i <= circlePoints; i++) {
+                ctx.lineTo(xStart+radius*Math.cos(linedistanse*i),yStart+radius*Math.sin(linedistanse*i));
+        }
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+    }
+
+    function draw2() {
+        ctx.clearRect(0,0,600,600);
+        draw();
+        let linedistanse=2*Math.PI/circlePoints;
+        ctx.beginPath();
+        for (var i = 0; i < circlePoints; i++) {
+            var currentP = i * linedistanse;
+            var CX = radius * Math.sin(currentP);
+            var CY = radius * Math.cos(currentP);
+
+            var targetThing = (i * factor * linedistanse) % circlePoints;
+            var targetX = radius * Math.sin(targetThing);
+            var targetY = radius * Math.cos(targetThing);
+
+
+            ctx.moveTo(xStart + CX, yStart + CY);
+            ctx.lineTo(xStart + targetX, yStart + targetY);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+    }
+</script>
+</body>
+</html>

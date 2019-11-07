@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hus</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="600" style="border:1px solid #d3d3d3;">
+</canvas>
+<script type="text/javascript">
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var sky = ctx.createLinearGradient(0, 0, 600, 600);
+    sky.addColorStop(0, "white");
+    sky.addColorStop(1, "blue");
+
+    //var sun=ctx.createRadialGradient(0,0,40,40);
+    //sun.addColorStop(0,"yellow");
+    //sun.addColorStop(1,rgb(255,255,0,0.0));
+
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, 600, 500);
+
+    ctx.fillStyle="green";
+    ctx.fillRect(0,500,600,100);
+
+    ctx.fillStyle="black";
+    ctx.moveTo(0,400);
+    ctx.lineTo(300,350);
+    ctx.lineTo(500,450);
+    ctx.lineTo(600,460);
+    ctx.lineTo(600,500);
+    ctx.lineTo(0,500);
+    ctx.lineTo(0,400);
+    ctx.fillStyle="gray";
+    ctx.fill();
+//###################HOUSE##############################
+    ctx.fillStyle='yellow';
+    ctx.fillRect(100,450,200,100);
+    //###################DOOR########################
+    ctx.fillStyle='brown';
+    ctx.fillRect(120,480,40,70);
+    ctx.fillStyle='black';
+    ctx.fillRect(155,515,3,3);
+    //###############################################
+
+    //#################WINDOW########################
+    ctx.fillStyle="Aqua";
+    ctx.fillRect(200,480,60,40);
+
+        //############WINDOW BAR ####################
+        ctx.fillStyle="black";
+        ctx.fillRect(200,499,60,2);
+        ctx.fillRect(229,480,2,40);
+        //###########################################
+
+    //###############################################
+
+    //###################ROOF########################
+
+    ctx.beginPath();
+    ctx.moveTo(80,460);
+    ctx.lineTo(320,460);
+    ctx.lineTo(300,440);
+    ctx.lineTo(100,440);
+    ctx.lineTo(80,460);
+    ctx.fillStyle="gray";
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+
+    //###############################################
+
+//###############################################
+
+
+    ctx.moveTo(50,0);
+    ctx.fillStyle='white';
+    ctx.lineWidth=0;
+    ctx.arc(0,0,100,0,Math.PI);
+    ctx.lineTo(50,0);
+    ctx.fill();
+
+    ctx.fillStyle="black";
+    ctx.fillText("Vetle Hollund",450, 570);
+    ctx.fillText("fakulitet for teknologi og realfag",450,580);
+    ctx.fillText("Universitet i agder",450,590);
+</script>
+</body>
+</html>

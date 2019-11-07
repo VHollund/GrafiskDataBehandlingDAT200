@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .button {
+        background-color: #e7e7e7;
+        border: none;
+        color: black;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>
+<body>
+<div>
+    <button class="button" id="buttonNew">New Spline</button>
+    <button class="button" id="buttonMove">Move Points</button>
+    <button class="button" id="buttonAdd">Add New Points</button>
+    <button class="button" id="buttonRemove">Remove Points</button>
+    <button class="button" id="buttonBezier">Bezier</button>
+    <button class="button" id="buttonBSpline">BSpline</button>
+</div>
+
+<p></p>
+
+<canvas id="myCanvas" width="650" height="650" style="border:1px solid #d3d3d3;">
+</canvas>
+
+<p id="debug"></p>
+<script>
+    var c;
+    var ctx;
+
+    var bNew, bMove, bAddPoints, bRemovePoints, bBezier, bSpline;
+    var mouseButton;
+    var points = [];
+
+    var selectedPoint = -1;
+    var selectedPair = -2;
+    var numberEdges = 50;   // Number of edges for each curve segment
+
+    bBezier = true;
+    bNew = true;
+
+    c = document.getElementById("myCanvas");
+    ctx = c.getContext("2d");
+
+    c.addEventListener("mousedown", mouseDown);
+    c.addEventListener("mouseup", mouseUp);
+    c.addEventListener("mousemove", mouseMove);
+
+    points = [ 50, 600, 50, 50, 600, 50, 600, 600 ];
+
+    draw();
+
+    function drawSpline(from, myMatrix)
+    {
+        var unitMatrix = [];
+
+        var pointMatrixX = [
+            points[from * 2], points[from * 2 + 2], points[from * 2 + 4], points[from * 2 + 6]
+        ];
+
+        var pointMatrixY = [
+            points[from * 2 + 1], points[from * 2 + 3], points[from * 2 + 5], points[from * 2 + 7]
+        ];
+
+        var pointMatrixX2 = [ 0, 0, 0, 0 ];
+        var pointMatrixY2 = [ 0, 0, 0, 0 ];
+
+        // Let us first multiply myMatrix with pointMatrixX and pointMatrixY,
+        // We will get pointMatrixX2 and pointMatrixY2 we can use in the next step
+
+        for(row = 0; row < 4; row++)
+        {
+            for(column = 0; column < 4; column++)
+            {
+                pointMatrixX2[row] += myMatrix[row][column] * pointMatrixX[column];
+                pointMatrixY2[row] += myMatrix[row][column] * pointMatrixY[column];
+            }
+        }
+
+        var u = 0.00;
+        var uStep = 1.00 / numberEdges;
+
+        for(var i = 0; i < numberEdges + 1; i++)
+        {
+            // From    0.00 <= u <= 1.00   let us calculate the (x, y) coordinate
+            // in the path and draw line segments between the coordinates
+
+            x = 0; y = 0;
+            u = uStep * i;
+            unitMatrix = [ Math.pow(u, 3), Math.pow(u, 2), u, 1 ];
+
+            for(element = 0; element < 4; element++)
+            {
+                x += unitMatrix[element] * pointMatrixX2[element];
+                y += unitMatrix[element] * pointMatrixY2[element];
+            }
+
+            if(u === 0.0)
+            {
+                ctx.beginPath();
+                ctx.strokeStyle = "gray";
+                ctx.lineWidth = 3.0;
+                ctx.moveTo(x, y);
+            }
+            else {
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+        }
+    }
+
+
+    function setupSpline(from, to)
+    {
+        var x, y;
+
+        // Send this to drawSpline with the matrix for the currently chosen spline type
+        // Then check if we have enough points to draw more curves
+
+        if(bBezier)
+        {
+            var bezierCubicMatrix = [
+                [-1, 3, -3, 1],
+                [3, -6, 3, 0],
+                [-3, 3, 0, 0],
+                [1, 0, 0, 0]
+            ];
+
+            drawSpline(from, bezierCubicMatrix);
+
+            if( (numberPoints() - 1) >= to + 3)
+                setupSpline(to, to + 3);
+        }
+        else {
+
+            var BSplineMatrix = [
+                [-1/6, 0.5, -0.5, 1/6],
+                [0.5, -1, 0.5, 0],
+                [-0.5, 0, 0.5, 0],
+                [1/6, 2/3, 1/6, 0]
+            ];
+
+            drawSpline(from, BSplineMatrix);
+
+            if( (numberPoints() - 1) >= to + 1)
+                setupSpline(from + 1, to + 1);
+        }
+    }
+
+
+    function draw()
+    {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, c.width, c.height);
+
+        var text;
+        var n;
+
+        text = bBezier ? "Bezier" : "BSpline";
+
+        if(bNew) text += " | New Spline";
+        else if(bMove) text += " | Move Points";
+        else if(bAddPoints) text += " | Add New Points";
+        else if(bRemovePoints) text += " | Remove Points";
+
+        ctx.font = "10pt Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText(text, 10, 20);
+
+        if(numberPoints() > 0) // Minimum 1 point
+        {
+            if(numberPoints() >= 4) // We have enough points to draw a spline
+                setupSpline(0, 3);
+
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 1.0;
+
+            ctx.beginPath();
+            ctx.moveTo(points[0], points[1]);
+
+            for(n = 2; n < points.length; n = n + 2)
+            {
+                ctx.lineTo(points[n], points[n + 1]);
+                ctx.stroke();
+            }
+
+            for(n = 0; n < points.length; n = n + 2)
+            {
+                // Draw the circle at this point
+                ctx.beginPath();
+                ctx.arc(points[n], points[n + 1], 5, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                if(bAddPoints && (n === selectedPair * 2 || n === selectedPair * 2 + 2))
+                    ctx.fillStyle = "lightgreen";
+                else
+                    ctx.fillStyle = "red";
+
+                ctx.fill();
+            }
+        }
+    }
+    c.addEventListener("mousedown", function (e) {
+        down = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        addPoint(e);
+    });
+
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    function drawLinesFromCenter() {
+        ctx.strokeStyle="#000000";
+        ctx.fillStyle="#007953";
+        ctx.clearRect(-600,-600,1200,1200);
+        ctx.beginPath();
+        ctx.moveTo(controlPoints[0].x,controlPoints[0].y);
+        for (let i=0; i<controlPoints.length;i++){
+            ctx.lineTo(controlPoints[i].x,controlPoints[i].y);
+        }
+
+        ctx.stroke();
+        drawBezier(10,100);
+
+    }
+
+    function addPoint(e){
+        if(e.clientX<600+c.offsetLeft && e.clientX>c.offsetLeft && e.clientY<600+c.offsetTop && e.clientY>c.offsetTop) {
+            controlPoints.push(new Point(e.clientX-c.offsetLeft, e.clientY-c.offsetTop));
+        }
+
+        if(controlPoints.length>1){
+            drawLinesFromCenter();
+        }
+    }
+
+</script>
+</body>
+</html>

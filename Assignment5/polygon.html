@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polygons</title>
+</head>
+<body>
+<div class="container">
+<button onclick="handleBool(value)" value="0">New Polygon</button>
+<button onclick="handleBool(value)" value="1">translate</button>
+<button onclick="handleBool(value)" value="2">scale</button>
+<button onclick="handleBool(value)" value="3">rotate</button>
+<button onclick="clearPoly()">clearPolygon</button>
+</div>
+<div class="container">
+    <canvas id="myCanvas" width="600" height="600" style="border:1px solid #d3d3d3;"></canvas>
+</div>
+<script>
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    ctx.strokeStyle="black";
+    let points=[];
+    let Newpoly;
+    let rotate;
+    let scale;
+    let translate;
+    let down=false;
+    let transX=0;
+    let transY=0;
+    let rotation=0;
+    let scaleX=1;
+    let scaleY=1;
+
+
+    c.addEventListener("mousedown", function (e){
+        down=true;
+        if(Newpoly){
+            addPoint(e);
+        }else if(rotate){
+            rotation=e.clientX/100;
+            transform();
+        }else if(scale){
+            scaleX=e.clientX/100;
+            scaleY=e.clientY/100;
+            transform(transX,transY);
+        }
+        else if(translate){
+            transX=e.clientX;
+            transY=e.clientY;
+            transform();
+        }
+    });
+
+    c.addEventListener("mouseup", function () {
+        down=false;
+    });
+
+    c.addEventListener("mousemove", function (e) {
+        if(down){
+            if(rotate){
+                rotation=e.clientX/100;
+                transform();
+            }else if(scale){
+                scaleX=e.clientX/100;
+                scaleY=e.clientY/100;
+                transform();
+            }
+            else if(translate){
+                transX=e.clientX;
+                transY=e.clientY;
+                transform();
+            }
+        }
+    });
+
+    function handleBool(val) {
+        if(val==="3"){
+            rotate=true;
+            scale=false;
+            translate=false;
+            Newpoly=false;
+        }
+        else if(val==="2"){
+            rotate=false;
+            scale=true;
+            translate=false;
+            Newpoly=false;
+        }
+        else if(val==="1"){
+            rotate=false;
+            scale=false;
+            translate=true;
+            Newpoly=false;
+        }
+        else if(val==="0"){
+            rotate=false;
+            scale=false;
+            translate=false;
+            Newpoly=true;
+        }
+    }
+
+    function clearPoly() {
+        points=[];
+        ctx.clearRect(-600,-600,1200,1200);
+        ctx.setTransform(1,0,0,1,0,0);
+        handleBool(0);
+    }
+
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    function addPoint(e){
+        if(e.clientX<600+c.offsetLeft && e.clientX>c.offsetLeft && e.clientY<600+c.offsetTop && e.clientY>c.offsetTop) {
+            points.push(new Point(e.clientX-c.offsetLeft, e.clientY-c.offsetTop));
+        }
+
+        if(points.length>1){
+            ctx.translate(300,300);
+            drawLinesFromCenter();
+            ctx.translate(-300,-300);
+        }
+    }
+
+    function transform() {
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.translate(300,300);
+        ctx.rotate(rotation);
+        ctx.translate(-300,-300);
+        ctx.translate(transX,transY);
+        ctx.scale(scaleX,scaleX);
+        drawLinesFromCenter();
+        ctx.setTransform(1,0,0,1,0,0);
+
+        //ctx.setTransform(1,0,0,1,0,0);
+        //ctx.transform(1,0,1,0,300,300);
+        //ctx.transform(Math.cos(rotation),Math.sin(rotation),-Math.sin(rotation),Math.cos(rotation),0,0);
+        //ctx.transform(1,0,1,0,300,300);
+        //ctx.transform(1,0,1,0,transX,transY);
+        //ctx.transform(scaleX,0,scaleX,0,0,0);
+        //drawLinesFromCenter();
+        //ctx.setTransform(1,0,0,1,0,0);
+    }
+
+    function drawLinesFromCenter() {
+        ctx.strokeStyle="#000000";
+        ctx.fillStyle="#007953";
+        ctx.clearRect(-600,-600,1200,1200);
+        ctx.beginPath();
+        ctx.moveTo(points[0].x-300,points[0].y-300);
+        for (let i=0; i<points.length;i++){
+            ctx.lineTo(points[i].x-300,points[i].y-300);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+    }
+
+</script>
+</body>
+</html>

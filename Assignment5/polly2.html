@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polygons</title>
+</head>
+<body>
+<div class="container">
+    <button onclick="handleBool(value)" value="0">New Polygon</button>
+    <button onclick="handleBool(value)" value="1">translate</button>
+    <button onclick="handleBool(value)" value="2">scale</button>
+    <button onclick="handleBool(value)" value="3">rotate</button>
+    <button onclick="clearPoly()">clearPolygon</button>
+</div>
+<div class="container">
+    <canvas id="myCanvas" width="600" height="600" style="border:1px solid #d3d3d3;"></canvas>
+</div>
+<script>
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    ctx.strokeStyle="black";
+    let points=[];
+    let Newpoly;
+    let scale;
+    let rotate;
+    let translate;
+    let down=false;
+    let transX=0;
+    let transY=0;
+    let rotation=0;
+    let scaleX=1;
+    let scaleY=1;
+    let startX;
+    let startY;
+    let xp=0;
+    let xy=0;
+
+
+    c.addEventListener("mousedown", function (e){
+        down=true;
+        startX=e.clientX;
+        startY=e.clientY;
+        if(Newpoly){
+            addPoint(e);
+        }else if(rotate){
+            startX=0;
+            rotation=startX;
+            //transform();
+        }else if(scale){
+            scaleX=e.clientX/100;
+            scaleY=e.clientY/100;
+            startX=e.clientX;
+            startY=e.clientY;
+            //transform(transX,transY);
+        }
+    });
+
+    c.addEventListener("mouseup", function () {
+        down=false;
+    });
+
+    c.addEventListener("mousemove", function (e) {
+        if(down){
+            if(rotate){
+                rotation=(startX-e.clientX)/100;
+                startX=e.clientX;
+                rotasjon(rotation);
+            }else if(scale){
+                scaleX=1/scaleX;
+                scales();
+                scaleX=e.clientX/xp;
+                scaleY=e.clientY/300;
+                scales();
+                //transform();
+            }
+            else if(translate){
+                transX=-(startX-e.clientX);
+                transY=-(startY-e.clientY);
+                startX=e.clientX;
+                startY=e.clientY;
+                move(transX,transY);
+            }
+        }
+    });
+
+    function handleBool(val) {
+        if(val==="3"){
+            rotate=true;
+            scale=false;
+            translate=false;
+            Newpoly=false;
+        }
+        else if(val==="2"){
+            rotate=false;
+            scale=true;
+            translate=false;
+            Newpoly=false;
+        }
+        else if(val==="1"){
+            rotate=false;
+            scale=false;
+            translate=true;
+            Newpoly=false;
+        }
+        else if(val==="0"){
+            rotate=false;
+            scale=false;
+            translate=false;
+            Newpoly=true;
+        }
+    }
+
+    function clearPoly() {
+        points=[];
+        ctx.clearRect(0,0,600,600);
+        handleBool(0);
+    }
+
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    function addPoint(e){
+        if(e.clientX<600+c.offsetLeft && e.clientX>c.offsetLeft && e.clientY<600+c.offsetTop && e.clientY>c.offsetTop) {
+            points.push(new Point(e.clientX-c.offsetLeft, e.clientY-c.offsetTop));
+        }
+
+        if(points.length>1){
+            drawLinesFromCenter();
+        }
+    }
+
+    function move(x,y) {
+        for (let i=0; i<points.length;i++){
+            points[i].x+=x;
+            points[i].y+=y;
+        }
+        ctx.clearRect(-600,-600,1200,1200);
+        drawLinesFromCenter();
+    }
+
+    function scales() {
+        ctx.clearRect(0,0,600,600);
+        tyngdepunkt();
+        for (k = 0; k < points.length; k++) {
+            points[k].x = points[k].x * scaleX + xp * (1 - scaleX);
+            points[k].y = points[k].y * scaleX + yp * (1 - scaleX);
+        }
+        drawLinesFromCenter();
+    }
+
+    function rotasjon(theta) {
+        ctx.clearRect(0,0,600,600);
+        tyngdepunkt();
+        let nkx;
+        let nky;
+        for (let k = 0; k < points.length; k++) {
+            nkx=xp + (points[k].x - xp) * Math.cos(theta) - (points[k].y - yp) * Math.sin(theta);
+            nky=yp + (points[k].x - xp) * Math.sin(theta) + (points[k].y - yp) * Math.cos(theta);
+            points[k].x = nkx;
+            points[k].y = nky;
+        }
+        drawLinesFromCenter();
+
+    }
+
+    function tyngdepunkt() {
+        xp = 0;   //Nullstiller tyngdepunktet til polygonet
+        yp = 0;
+        for (var i = 0; i < points.length; i++) {
+            xp = xp + points[i].x;
+            yp = yp + points[i].y;
+        }
+        xp = xp / points.length;
+        yp = yp / points.length;
+    }
+
+    function drawLinesFromCenter() {
+        ctx.strokeStyle="#000000";
+        ctx.fillStyle="#007953";
+        ctx.clearRect(-600,-600,1200,1200);
+        ctx.beginPath();
+        ctx.moveTo(points[0].x,points[0].y);
+        for (let i=0; i<points.length;i++){
+            ctx.lineTo(points[i].x,points[i].y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+        tyngdepunkt();
+    }
+
+</script>
+</body>
+</html>

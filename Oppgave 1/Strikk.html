@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="600" style="border:1px solid #d3d3d3;">
+</canvas>
+
+<script type="text/javascript">
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    let clicked = false;
+    let point1 = [305, 300];
+
+    drawsquare();
+    drawstill();
+
+
+
+        canvas.addEventListener("mousedown", function (e) {
+            if(295<e.clientX && e.clientX<305+canvas.offsetLeft && 295<e.clientY && e.clientY<305+canvas.offsetTop) {
+                clicked = true;
+                canvas.style.cursor = "grabbing";
+            }
+        });
+
+        canvas.addEventListener("mouseup", function (e) {
+            clicked=false;
+            drawstill();
+        });
+
+        canvas.addEventListener("mousemove", function (e) {
+            if (clicked) {
+                drawmove(e);
+            }
+            if(!clicked && 295<e.clientX && e.clientX<305+canvas.offsetLeft && 295<e.clientY && e.clientY<305+canvas.offsetTop) {
+                canvas.style.cursor = "grab";
+            }else if(!clicked) {
+                canvas.style.cursor = "default";
+            }else if(clicked){
+                canvas.style.cursor = "grabbing";
+            }
+        });
+
+
+
+    function drawsquare() {
+         ctx.clearRect(0,0,600,600);
+
+        ctx.fillStyle = "#0000ff";
+        ctx.fillRect(0, 0, 600, 600);
+
+        ctx.fillStyle="orange";
+        ctx.fillRect(100,100,400,400);
+    }
+
+     function drawstill() {
+         drawsquare();
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = "black";
+         ctx.beginPath();
+         ctx.arc(305, 300, 5, 0, 2 * Math.PI);
+         ctx.moveTo(100, 300);
+         ctx.lineTo(300, 300);
+         ctx.lineTo(500, 300);
+         ctx.stroke();
+     }
+
+     function drawmove(e) {
+         point1[0] = e.clientX;
+         point1[1] = e.clientY;
+
+         drawsquare();
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = "black";
+         ctx.beginPath();
+         ctx.arc(point1[0], point1[1], 5, 0, 2 * Math.PI);
+         ctx.moveTo(100, 300);
+         ctx.lineTo(point1[0], point1[1]);
+         ctx.lineTo(500, 300);
+         ctx.stroke();
+     }
+</script>
+</body>
+</html>

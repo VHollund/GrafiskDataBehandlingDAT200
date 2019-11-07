@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firkantkunst</title>
+</head>
+<body>
+
+<canvas id="myCanvas" width="600" height="600" style="border:1px solid #d3d3d3;"></canvas>
+
+<script>
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    ctx.strokeStyle="black";
+    let size=150;
+
+
+    for(var k=1;k<5;k++) {
+        for(var l=1;l<5;l++) {
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            size=150;
+            ctx.translate((l*150)-150/2,(k*150)-150/2);
+            if(l%2!==0 && k%2!==0){
+                draw(-1);
+            }else if(l%2===0 && k%2!==0){
+                draw(1);
+            }else if(l%2===0 && k%2===0){
+                draw(-1);
+            }else if(l%2!==0 && k%2===0){
+                draw(1);
+            }
+
+        }
+    }
+    function draw(k) {
+        for(var x=0;x<150;x+=8){
+            drawRectCentered(size);
+            size=size*0.875;
+            ctx.rotate(k*3);
+        }
+    }
+
+    function drawRectCentered(side) {
+        ctx.strokeRect(0 - side / 2, 0 - side / 2, side, side);
+    }
+
+</script>
+</body>
+</html>
