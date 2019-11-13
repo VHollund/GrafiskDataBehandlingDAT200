@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3c550034-ab0d-4844-b361-3ef5fd84fa48" name="Default Changelist" comment="" />
+    <list default="true" id="3c550034-ab0d-4844-b361-3ef5fd84fa48" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../windmill/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windmill.html" beforeDir="false" afterPath="$PROJECT_DIR$/windmill.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../windmill/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../windmill/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../windmill/windmill.html" beforeDir="false" afterPath="$PROJECT_DIR$/../windmill/windmill.html" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,13 +22,22 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1SpXAcnpzTe9tUsSrKcUHGApuac" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../windmill" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vetle\DAT200\firstThree" />
+      <recent name="C:\Users\vetle\DAT200\firstThree\libs" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\vetle\DAT200\firstThree" />
     </key>
@@ -52,11 +68,25 @@
       <workItem from="1572277492009" duration="106000" />
       <workItem from="1572345360600" duration="1696000" />
       <workItem from="1572503026742" duration="4659000" />
-      <workItem from="1573132124831" duration="574000" />
+      <workItem from="1573132124831" duration="7585000" />
+      <workItem from="1573552664589" duration="68000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

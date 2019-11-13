@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author/>
+      <authoring_tool>FBX COLLADA exporter</authoring_tool>
+      <comments/>
+    </contributor>
+    <created>2019-11-07T17:28:09Z</created>
+    <keywords/>
+    <modified>2019-11-07T17:28:09Z</modified>
+    <revision/>
+    <subject/>
+    <title/>
+    <unit meter="0.025400" name="centimeter"/>
+    <up_axis>Y_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="MaterialFBXASC032FBXASC03526" name="MaterialFBXASC032FBXASC03526">
+      <instance_effect url="#MaterialFBXASC032FBXASC03526-fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="MaterialFBXASC032FBXASC03526-fx" name="MaterialFBXASC032FBXASC03526">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.462745  0.352941 0.364706 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.462745  0.352941 0.364706 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.000000  0.000000 0.000000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">2.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color sid="transparent">1.000000  1.000000 1.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="Blade3-lib" name="Blade3Mesh">
+      <mesh>
+        <source id="Blade3-POSITION">
+          <float_array id="Blade3-POSITION-array" count="18">
+-0.791685 0.000000 -36.659790
+3.987720 -2.951321 18.265392
+-3.890989 0.584621 18.402470
+-3.440976 0.683328 18.394640
+3.987720 2.951321 18.265392
+0.165093 0.000000 18.331900
+</float_array>
+          <technique_common>
+            <accessor source="#Blade3-POSITION-array" count="6" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Blade3-Normal0">
+          <float_array id="Blade3-Normal0-array" count="72">
+-0.409609 -0.912163 -0.013371
+-0.409609 -0.912163 -0.013371
+-0.409609 -0.912163 -0.013371
+-0.214567 0.976451 -0.022445
+-0.214567 0.976451 -0.022445
+-0.214567 0.976451 -0.022445
+-0.292311 0.955972 -0.025932
+-0.292311 0.955972 -0.025932
+-0.292311 0.955972 -0.025932
+0.996235 0.000000 -0.086689
+0.996235 0.000000 -0.086689
+0.996235 0.000000 -0.086689
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 -0.000000 0.999849
+0.017396 -0.000000 0.999849
+0.017396 0.000000 0.999849
+0.017396 0.000000 0.999849
+</float_array>
+          <technique_common>
+            <accessor source="#Blade3-Normal0-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Blade3-UV0">
+          <float_array id="Blade3-UV0-array" count="22">
+0.500000 1.000000
+0.000000 0.000000
+1.000000 0.000000
+-0.147711 0.000000
+0.852289 0.000000
+0.000000 1.000000
+1.000000 1.000000
+1.000000 0.000000
+0.000000 0.000000
+0.500000 0.500000
+0.500000 1.000000
+</float_array>
+          <technique_common>
+            <accessor source="#Blade3-UV0-array" count="11" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Blade3-VERTEX">
+          <input semantic="POSITION" source="#Blade3-POSITION"/>
+        </vertices>
+        <triangles count="8" material="MaterialFBXASC032FBXASC03526">
+          <input semantic="VERTEX" offset="0" source="#Blade3-VERTEX"/>
+          <input semantic="NORMAL" offset="1" source="#Blade3-Normal0"/>
+          <input semantic="TEXCOORD" offset="2" set="0" source="#Blade3-UV0"/>
+          <p> 0 0 0 1 1 1 2 2 2 0 3 10 2 4 3 3 5 4 0 6 0 3 7 1 4 8 2 0 9 10 4 10 3 1 11 4 1 12 5 5 13 9 2 14 6 2 15 6 5 16 9 3 17 7 3 18 7 5 19 9 4 20 8 4 21 8 5 22 9 1 23 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="blad" name="blad">
+      <node name="Blade3" id="Blade3" sid="Blade3">
+        <matrix sid="matrix">-0.432840 0.000000 -0.901471 17.710312 0.901471 0.000000 -0.432840 85.724815 0.000000 -1.000000 -0.000000 17.724274 0.000000 0.000000 0.000000 1.000000</matrix>
+        <instance_geometry url="#Blade3-lib">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="MaterialFBXASC032FBXASC03526" target="#MaterialFBXASC032FBXASC03526"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="FCOLLADA">
+            <visibility>1.000000</visibility>
+          </technique>
+        </extra>
+      </node>
+      <extra>
+        <technique profile="MAX3D">
+          <frame_rate>30.000000</frame_rate>
+        </technique>
+        <technique profile="FCOLLADA">
+          <start_time>0.000000</start_time>
+          <end_time>3.333333</end_time>
+        </technique>
+      </extra>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#blad"/>
+  </scene>
+</COLLADA>

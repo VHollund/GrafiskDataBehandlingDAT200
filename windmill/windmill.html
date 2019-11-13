@@ -9,6 +9,7 @@
     <script type="text/javascript" src="libs/stats.js"></script>
     <script type="text/javascript" src="libs/dat.gui.js"></script>
     <script type="text/javascript" src="libs/OrbitControls.js"></script>
+    <script type="text/javascript" src="libs/ColladaLoader.js"></script>
 
     <style>
         body {
@@ -26,14 +27,14 @@
 <div id="WebGL-output">
 </div>
 <script type="text/javascript">
-
+let tmp;
     function init() {
-
         var stats = initStats();
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
 
+        var branchGroup = new THREE.Object3D();
         // create a camera, which defines where we're looking at.
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -60,19 +61,41 @@
 
         scene.add(plane);
 
-        // create a cube
-        var coneGeometry = new THREE.ConeGeometry(4, 4, 4);
-        var coneMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
-        var cone = new THREE.Mesh(coneGeometry, coneMaterial);
-        cone.castShadow = true;
 
-        // position the cube
-        cone.position.x = 0;
-        cone.position.y = 5;
-        cone.position.z = 0;
+        let blad1 = createObject("blad.DAE", "Blade3");
+        let blad2 = createObject("blad.DAE", "Blade3");
+        let blad3 = createObject("blad.DAE", "Blade3");
+        let Base=createObject("Base.DAE","Base");
+        let Head=createObject("head.DAE","Head");
 
-        // add the cube to the scene
-        scene.add(cone);
+        Head.position.y=8.5;
+        Head.rotateX(Math.PI/2);
+        Head.rotateZ(Math.PI/2);
+        scene.add(Head);
+        Base.rotateX(Math.PI/-2);
+        scene.add(Base);
+
+        blad3.rotateZ(2 * Math.PI / 4);
+        blad2.rotateZ(2 * Math.PI / 4);
+        blad1.rotateZ(2 * Math.PI / 4);
+        blad1.rotateY(2 * Math.PI / 4);
+        blad2.rotateY(2 * Math.PI / 4);
+        blad3.rotateY(2 * Math.PI / 4);
+        blad2.rotateY(2 * Math.PI / 3);
+        blad3.rotateY(2 * Math.PI / -3);
+
+        blad1.position.y=-2;
+        blad2.position.y=1;
+        blad3.position.y=1;
+        blad2.position.z=1.9;
+        blad3.position.z=-1.9;
+        branchGroup.translateY(7.5);
+        branchGroup.add(blad1);
+        branchGroup.add(blad2);
+        branchGroup.add(blad3);
+
+        branchGroup.position.x=1.8;
+        scene.add(branchGroup);
 
         // position and point the camera to the center of the scene
         camera.position.x = -30;
@@ -104,23 +127,39 @@
         var step = 0;
 
         var controls = new function () {
-            this.rotationSpeedx = 0.02;
-            this.rotationSpeedy =0.02;
-            this.rotationSpeedz =0.02;
+            this.rotationSpeed= 0.02;
+
+
         };
 
         var gui = new dat.GUI();
-        gui.add(controls, 'rotationSpeedx', 0, 0.5);
-        gui.add(controls, 'rotationSpeedy',0,0.5);
-        gui.add(controls, 'rotationSpeedz',0,0.5);
+        gui.add(controls, 'rotationSpeed', 0, 0.5);
+
         render();
+
+        function createObject(objFile, objName) {
+            var container = new THREE.Object3D();
+            var loader = new THREE.ColladaLoader();
+            var mesh = new THREE.Mesh;
+            loader.load(objFile, function (result) {
+                mesh = result.scene.children[0].children[0].clone();
+                if (objFile == "Blad.dae") {
+                    mesh.scale.set(0.1, 0.1, 0.1);
+                    mesh.rotateX(Math.PI / 18);
+                }
+                else mesh.scale.set(0.1, 0.1, 0.1);
+                mesh.castShadow = true;
+                mesh.name = objName;
+                container.add(mesh);
+            });
+            return container;
+        }
 
         function render() {
             stats.update();
-            // rotate the cube around its axes
-            cone.rotation.x += controls.rotationSpeedx;
-            cone.rotation.y += controls.rotationSpeedy;
-            cone.rotation.z += controls.rotationSpeedz;
+            branchGroup.rotation.x-=controls.rotationSpeed;
+
+
 
             // bounce the sphere up and down
             //step += controls.bouncingSpeed;

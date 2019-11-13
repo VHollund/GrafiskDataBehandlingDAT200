@@ -9,6 +9,8 @@
     <script type="text/javascript" src="libs/stats.js"></script>
     <script type="text/javascript" src="libs/dat.gui.js"></script>
     <script type="text/javascript" src="libs/OrbitControls.js"></script>
+    <script type="text/javascript" src="libs/TDSLoader.js"></script>
+    <script type="text/javascript" src="libs/ColladaLoader.js"></script>
 
     <style>
         body {
@@ -26,10 +28,10 @@
 <div id="WebGL-output">
 </div>
 <script type="text/javascript">
-
     function init() {
-
         var stats = initStats();
+
+
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
@@ -60,6 +62,13 @@
 
         scene.add(plane);
 
+
+        let blad1 = createObject("Blade.dae", "Blade3");
+        let blad2 = createObject("Blade.dae", "Blade3");
+        let blad3 = createObject("Blade.dae", "Blade3");
+        let Base=createObject("Base.dae","Base");
+        let Head=createObject("head.dae","Head");
+
         // create a cube
         var coneGeometry = new THREE.ConeGeometry(4, 4, 4);
         var coneMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
@@ -70,6 +79,7 @@
         cone.position.x = 0;
         cone.position.y = 5;
         cone.position.z = 0;
+
 
         // add the cube to the scene
         scene.add(cone);
