@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3c550034-ab0d-4844-b361-3ef5fd84fa48" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Gravemaskin/.idea/Gravemaskin.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Gravemaskin/Digger.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gravemaskin.max" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Gravemaskin/Digger.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Gravemaskin/Digger.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,7 +71,7 @@
       <workItem from="1573147895534" duration="4086000" />
       <workItem from="1573552736210" duration="648000" />
       <workItem from="1573560151714" duration="1272000" />
-      <workItem from="1573663626778" duration="1406000" />
+      <workItem from="1573663626778" duration="1419000" />
     </task>
     <servers />
   </component>

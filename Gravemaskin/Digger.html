@@ -34,7 +34,11 @@
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
 
-        var branchGroup = new THREE.Object3D();
+        var arm1G = new THREE.Object3D();
+        var arm2G = new THREE.Object3D();
+        var shuffleG = new THREE.Object3D();
+        var BaseG = new THREE.Object3D();
+        var hutG = new THREE.Object3D();
         // create a camera, which defines where we're looking at.
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -60,22 +64,10 @@
         // add the plane to the scene
 
         scene.add(plane);
-        var material = new THREE.LineBasicMaterial({
-            color: 0x0000ff
-        });
 
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(
-            new THREE.Vector3( 0, 1, 0 ),
-            new THREE.Vector3( 1, 1, 0 ),
-            new THREE.Vector3( 0, 1, 0 ),
-            new THREE.Vector3( 0, 2, 0 ),
-            new THREE.Vector3( 0, 1, 0 ),
-            new THREE.Vector3( 0, 1, 1 )
-        );
+        var axesHelper = new THREE.AxesHelper(1);
+        //axesHelper.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0.5, 0.65));
 
-        var line = new THREE.Line( geometry, material );
-        scene.add( line );
 
         let arm1 = createObject("arm1.DAE", "arm1");
         let arm2 = createObject("arm2.DAE", "arm2");
@@ -86,26 +78,34 @@
         hut.position.z=0.19;
         base.position.y=0.1;
         base.rotateX(Math.PI / -2);
-        /*arm1.translateY(-1.3);
-        arm1.position.z-=0.7;
-        arm1.translateZ(0.9);
-        arm2.translateY(-0.5);
-        arm2.position.y-=0.5;
-        shuffle.translateY(-0.5);
-        `*/
+        arm1G.applyMatrix(new THREE.Matrix4().makeTranslation(0,-0.65,0.1));
+        arm2G.applyMatrix(new THREE.Matrix4().makeTranslation(0,-0.58,0.07));
+        shuffleG.applyMatrix(new THREE.Matrix4().makeTranslation(0,-0.40,0.07));
+        //arm1.position.z-=0.7;
+        arm1.position.y=-0.1;
+        arm1.position.z=0.65;
+        arm2.position.y=-0.35;
+        arm2.position.z=-0.05;
+        //arm2.translateY(-0.5);
+        //arm2.position.y-=0.5;
+        shuffle.position.y=-0.15;
+        shuffle.position.z=-0.05;
+        arm1.rotateX(Math.PI/-2);
 
-        arm1.translateZ(1);
-        arm1.translateY(0.3);
+        shuffleG.add(shuffle);
+        shuffleG.add(axesHelper);
+        arm2.add(shuffleG);
+        arm2G.add(arm2);
+        arm1.add(arm2G);
+        arm1G.add(arm1);
+        scene.add(arm1G);
 
-
-        arm1.rotateX(1);
-        
-        scene.add(arm1);
         //arm2.add(shuffle);
         //arm1.add(arm2);
-        //hut.add(arm1);
-        //base.add(hut);
-        scene.add(base);
+        hut.add(arm1G);
+        base.add(hut);
+        BaseG.add(base);
+        scene.add(BaseG);
 
         //base.rotateZ(1);//horisontal
 
@@ -140,15 +140,25 @@
         var step = 0;
 
         var controls = new function () {
-            this.rotationSpeed= 0.02;
-
-
+            this.arm1Bend = 0.56;
+            this.arm2Bend = 0.57;
+            this.shuffleBend = 0.57;
+            this.hutRot = 0.57;
+            this.Rot = 0.57;
         };
 
         var gui = new dat.GUI();
-        gui.add(controls, 'rotationSpeed', 0, 0.5);
+        gui.add(controls, 'arm1Bend', 0.55, 0.57);
+        gui.add(controls, 'arm2Bend', 0.55, 0.58);
+        gui.add(controls, 'shuffleBend', 0.54, 0.58);
+        gui.add(controls, 'hutRot', 0.5, 0.60);
+        gui.add(controls, 'Rot', 0.5, 0.60);
 
         render();
+
+        function DegToRad(radians) {
+            return radians * 180 / Math.PI;
+        };
 
         function createObject(objFile, objName) {
             var container = new THREE.Object3D();
@@ -166,8 +176,11 @@
 
         function render() {
             stats.update();
-            branchGroup.rotation.x-=controls.rotationSpeed;
-
+            arm1G.rotation.x = DegToRad(controls.arm1Bend);
+            arm2G.rotation.x = DegToRad(controls.arm2Bend);
+            shuffleG.rotation.x = DegToRad(controls.shuffleBend);
+            hut.rotation.z = DegToRad(controls.hutRot);
+            base.rotation.z = DegToRad(controls.Rot);
 
 
             // bounce the sphere up and down
