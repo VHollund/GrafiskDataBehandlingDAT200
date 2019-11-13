@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Assignment 9</title>
+    <script type="text/javascript" src="three.js"></script>
+    <script type="text/javascript" src="libs/stats.js"></script>
+    <script type="text/javascript" src="libs/dat.gui.js"></script>
+    <script type="text/javascript" src="libs/OrbitControls.js"></script>
+    <script type="text/javascript" src="libs/ColladaLoader.js"></script>
+
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div id="Stats-output">
+</div>
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+<script type="text/javascript">
+    let tmp;
+    function init() {
+        var stats = initStats();
+
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+
+        var branchGroup = new THREE.Object3D();
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer({ antialias: true});
+
+        renderer.setClearColor(new THREE.Color(0xffffff, 1.0));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+
+        // create the ground plane
+        var planeGeometry = new THREE.PlaneGeometry(20, 20, 50, 1);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+
+        // rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 0;
+        plane.position.y = 0;
+        plane.position.z = 0;
+
+        // add the plane to the scene
+
+        scene.add(plane);
+        var material = new THREE.LineBasicMaterial({
+            color: 0x0000ff
+        });
+
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(
+            new THREE.Vector3( 0, 1, 0 ),
+            new THREE.Vector3( 1, 1, 0 ),
+            new THREE.Vector3( 0, 1, 0 ),
+            new THREE.Vector3( 0, 2, 0 ),
+            new THREE.Vector3( 0, 1, 0 ),
+            new THREE.Vector3( 0, 1, 1 )
+        );
+
+        var line = new THREE.Line( geometry, material );
+        scene.add( line );
+
+        let arm1 = createObject("arm1.DAE", "arm1");
+        let arm2 = createObject("arm2.DAE", "arm2");
+        let shuffle = createObject("shuffle.DAE", "shuffle");
+        let base=createObject("base.DAE","base");
+        let hut=createObject("hut.DAE","hut");
+
+        hut.position.z=0.19;
+        base.position.y=0.1;
+        base.rotateX(Math.PI / -2);
+        /*arm1.translateY(-1.3);
+        arm1.position.z-=0.7;
+        arm1.translateZ(0.9);
+        arm2.translateY(-0.5);
+        arm2.position.y-=0.5;
+        shuffle.translateY(-0.5);
+        `*/
+
+        arm1.translateZ(1);
+        arm1.translateY(0.3);
+
+
+        arm1.rotateX(1);
+        
+        scene.add(arm1);
+        //arm2.add(shuffle);
+        //arm1.add(arm2);
+        //hut.add(arm1);
+        //base.add(hut);
+        scene.add(base);
+
+        //base.rotateZ(1);//horisontal
+
+
+        // position and point the camera to the center of the scene
+        camera.position.x = -30;
+        camera.position.y = 40;
+        camera.position.z = 30;
+        camera.lookAt(scene.position);
+
+        // add subtle ambient lighting
+        var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+        scene.add(ambientLight);
+
+        // add spotlight for the shadows
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-40, 60, -10);
+        spotLight.castShadow = true;
+        spotLight.shadowMapWidth = 4096; // default is 512
+        spotLight.shadowMapHeight = 4096; // default is 512
+        scene.add(spotLight);
+
+        // add the output of the renderer to the html element
+        document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+
+        let orbit =  new THREE.OrbitControls(camera, renderer.domElement);
+        orbit.minDistance=0;
+        orbit.maxDistance=100;
+        orbit.update();
+        // call the render function
+        var step = 0;
+
+        var controls = new function () {
+            this.rotationSpeed= 0.02;
+
+
+        };
+
+        var gui = new dat.GUI();
+        gui.add(controls, 'rotationSpeed', 0, 0.5);
+
+        render();
+
+        function createObject(objFile, objName) {
+            var container = new THREE.Object3D();
+            var loader = new THREE.ColladaLoader();
+            var mesh = new THREE.Mesh;
+            loader.load(objFile, function (result) {
+                mesh = result.scene.children[0].children[0].clone();
+                mesh.scale.set(0.1,0.1, 0.1);
+                mesh.castShadow = true;
+                mesh.name = objName;
+                container.add(mesh);
+            });
+            return container;
+        }
+
+        function render() {
+            stats.update();
+            branchGroup.rotation.x-=controls.rotationSpeed;
+
+
+
+            // bounce the sphere up and down
+            //step += controls.bouncingSpeed;
+            // render using requestAnimationFrame
+            orbit.update();
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        }
+
+        function initStats() {
+
+            var stats = new Stats();
+
+            stats.setMode(0); // 0: fps, 1: ms
+
+            // Align top-left
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+
+            document.getElementById("Stats-output").appendChild(stats.domElement);
+
+            return stats;
+        }
+    }
+    window.onload = init;
+</script>
+</body>
+</html>

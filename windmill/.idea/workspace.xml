@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3c550034-ab0d-4844-b361-3ef5fd84fa48" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../firstThree/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../firstThree/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../firstThree/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../firstThree/windmill.html" beforeDir="false" afterPath="$PROJECT_DIR$/../firstThree/windmill.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gravemaskin/.idea/Gravemaskin.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Gravemaskin/Digger.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gravemaskin.max" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windmill.html" beforeDir="false" afterPath="$PROJECT_DIR$/windmill.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +26,7 @@
   <component name="ProjectId" id="1SpXAcnpzTe9tUsSrKcUHGApuac" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -74,6 +73,7 @@
       <workItem from="1573147895534" duration="4086000" />
       <workItem from="1573552736210" duration="648000" />
       <workItem from="1573560151714" duration="1272000" />
+      <workItem from="1573663626778" duration="1406000" />
     </task>
     <servers />
   </component>
